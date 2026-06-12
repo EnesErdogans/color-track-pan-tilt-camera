@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pan/Tilt Kamera Kontrol</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css', v=5) }}">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">YEREL KAMERA SISTEMI</p>
+      <h1>Pan/Tilt Kontrol Merkezi</h1>
+    </div>
+    <div class="status-row">
+      <span id="cameraBadge" class="badge">Kamera bekleniyor</span>
+      <span id="serialBadge" class="badge">Arduino bagli degil</span>
+      <span id="modeBadge" class="badge accent">MANUEL</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="video-card panel">
+      <div class="panel-title">
+        <div>
+          <p class="eyebrow">CANLI YAYIN</p>
+          <h2 id="cameraTitle">Kamera secilmedi</h2>
+        </div>
+        <div class="metrics">
+          <span><strong id="fps">0</strong> FPS</span>
+          <span><strong id="targetState">YOK</strong> hedef</span>
+        </div>
+      </div>
+      <div class="video-shell">
+        <img id="video" src="/video_feed" alt="Canli kamera yayini">
+        <span id="aimMarker" aria-hidden="true"></span>
+      </div>
+      <div class="aim-controls">
+        <p>Yeni merkezi belirlemek icin canli goruntuye tiklayin.</p>
+        <div>
+          <button id="saveAimCenter">Nisangahi kaydet</button>
+          <button id="resetAimCenter" class="secondary">Ortaya sifirla</button>
+        </div>
+      </div>
+    </section>
+
+    <aside class="controls">
+      <section class="panel">
+        <p class="eyebrow">1. BAGLANTILAR</p>
+        <h2>Kamera ve Arduino</h2>
+        <label for="cameraSelect">Kamera</label>
+        <div class="inline">
+          <select id="cameraSelect"></select>
+          <button id="scanCameras" class="secondary">Tara</button>
+          <button id="useCamera">Sec</button>
+        </div>
+
+        <label for="serialSelect">Arduino seri portu</label>
+        <div class="inline">
+          <select id="serialSelect"></select>
+          <button id="scanPorts" class="secondary">Yenile</button>
+          <button id="connectSerial">Baglan</button>
+        </div>
+        <button id="disconnectSerial" class="danger wide">Baglantiyi kes</button>
+
+        <div class="network-box">
+          <strong>Telefondan erisim</strong>
+          <p>Telefon ve bilgisayar ayni Wi-Fi aginda olmali.</p>
+          <div id="networkUrls">Yerel ag adresi araniyor...</div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <p class="eyebrow">2. CALISMA MODU</p>
+        <div class="mode-switch">
+          <button id="manualMode" class="mode active">Manuel</button>
+          <button id="autoMode" class="mode">Otonom renk takibi</button>
+        </div>
+
+        <div id="manualPanel">
+          <label for="moveStep">Hareket adimi: <strong id="moveStepValue">2</strong> derece</label>
+          <input id="moveStep" type="range" min="1" max="10" value="2">
+          <div class="dpad">
+            <button data-pan="0" data-tilt="-1">Yukari</button>
+            <button data-pan="-1" data-tilt="0">Sol</button>
+            <button id="centerButton" class="center">Merkez</button>
+            <button data-pan="1" data-tilt="0">Sag</button>
+            <button data-pan="0" data-tilt="1">Asagi</button>
+          </div>
+          <label class="toggle">
+            <input id="laserToggle" type="checkbox">
+            <span>Lazer cikisi</span>
+          </label>
+        </div>
+      </section>
+
+      <section class="panel">
+        <p class="eyebrow">3. SERVO KALIBRASYONU</p>
+        <h2>Fiziksel merkez acilari</h2>
+        <p class="help-text">
+          Otonom modu kapatin. Yon tuslariyla kamerayi mekanik merkeze getirin,
+          sonra bu konumu Arduino'ya kaydedin.
+        </p>
+
+        <div class="calibration-readout">
+          <span>Pan <strong id="panCenterValue">90</strong> derece</span>
+          <span>Tilt <strong id="tiltCenterValue">90</strong> derece</span>
+        </div>
+
+        <label for="calibrationStep">
+          Tus adimi: <strong id="calibrationStepValue">1</strong> derece
+        </label>
+        <input id="calibrationStep" type="range" min="1" max="10" value="1">
+
+        <div class="calibration-dpad">
+          <button data-cal-pan="0" data-cal-tilt="-1">Yukari</button>
+          <button data-cal-pan="1" data-cal-tilt="0">Sol</button>
+          <button id="saveCalibration" class="calibration-save">Merkezi kaydet</button>
+          <button data-cal-pan="-1" data-cal-tilt="0">Sag</button>
+          <button data-cal-pan="0" data-cal-tilt="1">Asagi</button>
+        </div>
+        <p id="savedCalibration" class="help-text">Kayitli merkez: pan 90, tilt 90</p>
+      </section>
+
+      <section id="trackingPanel" class="panel hidden">
+        <p class="eyebrow">4. RENK TAKIBI</p>
+        <h2>HSV hedef ayarlari</h2>
+        <div class="presets">
+          <button class="secondary preset" data-preset="red">Kirmizi</button>
+          <button class="secondary preset" data-preset="green">Yesil</button>
+          <button class="secondary preset" data-preset="blue">Mavi</button>
+          <button class="secondary preset" data-preset="yellow">Sari</button>
+        </div>
+
+        <div class="range-grid">
+          <label>H alt <input id="lower_h" type="number" min="0" max="179"></label>
+          <label>H ust <input id="upper_h" type="number" min="0" max="179"></label>
+          <label>S alt <input id="lower_s" type="number" min="0" max="255"></label>
+          <label>S ust <input id="upper_s" type="number" min="0" max="255"></label>
+          <label>V alt <input id="lower_v" type="number" min="0" max="255"></label>
+          <label>V ust <input id="upper_v" type="number" min="0" max="255"></label>
+        </div>
+
+        <label>Minimum hedef alani <input id="min_area" type="number" min="50"></label>
+        <label>Yatay olu bolge <input id="dead_zone_x" type="number" min="5"></label>
+        <label>Dikey olu bolge <input id="dead_zone_y" type="number" min="5"></label>
+        <label>Takip kazanci <input id="gain" type="number" min="0.001" max="0.5" step="0.005"></label>
+        <label>Maksimum hareket <input id="max_step" type="number" min="1" max="20"></label>
+        <button id="saveTracking" class="wide">Ayarlari uygula</button>
+      </section>
+    </aside>
+  </main>
+
+  <div id="toast" role="status"></div>
+  <script src="{{ url_for('static', filename='app.js', v=5) }}"></script>
+</body>
+</html>

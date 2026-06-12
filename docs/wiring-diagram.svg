@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760">
+  <defs>
+    <style>
+      .bg { fill: #091018; }
+      .panel { fill: #111c27; stroke: #35d0ba; stroke-width: 3; }
+      .device { fill: #162432; stroke: #5f7890; stroke-width: 2; }
+      .title { fill: #edf5f8; font: 700 28px "Segoe UI", Arial, sans-serif; }
+      .label { fill: #edf5f8; font: 600 18px "Segoe UI", Arial, sans-serif; }
+      .small { fill: #9db1c0; font: 15px "Segoe UI", Arial, sans-serif; }
+      .pin { fill: #35d0ba; font: 700 17px "Segoe UI", Arial, sans-serif; }
+      .signal { stroke: #f5c542; stroke-width: 5; fill: none; }
+      .power { stroke: #ef5b67; stroke-width: 5; fill: none; }
+      .ground { stroke: #6f8495; stroke-width: 5; fill: none; }
+      .usb { stroke: #48a9ff; stroke-width: 5; fill: none; }
+      .dot-signal { fill: #f5c542; }
+      .dot-power { fill: #ef5b67; }
+      .dot-ground { fill: #6f8495; }
+    </style>
+    <marker id="arrow-yellow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#f5c542"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#48a9ff"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1280" height="760"/>
+  <text class="title" x="640" y="48" text-anchor="middle">Arduino UNO Pan/Tilt Kamera Baglanti Semasi</text>
+
+  <rect class="panel" x="55" y="105" rx="18" width="300" height="500"/>
+  <text class="title" x="205" y="150" text-anchor="middle">Arduino UNO</text>
+  <rect class="device" x="95" y="190" rx="10" width="220" height="360"/>
+  <text class="label" x="125" y="245">D9</text>
+  <circle class="dot-signal" cx="295" cy="238" r="8"/>
+  <text class="label" x="125" y="325">D10</text>
+  <circle class="dot-signal" cx="295" cy="318" r="8"/>
+  <text class="label" x="125" y="405">D11</text>
+  <circle class="dot-signal" cx="295" cy="398" r="8"/>
+  <text class="label" x="125" y="485">GND</text>
+  <circle class="dot-ground" cx="295" cy="478" r="8"/>
+  <text class="small" x="205" y="580" text-anchor="middle">USB ile bilgisayara baglanir</text>
+
+  <rect class="panel" x="470" y="90" rx="18" width="330" height="190"/>
+  <text class="title" x="635" y="135" text-anchor="middle">Pan Servo</text>
+  <text class="label" x="505" y="185">Sinyal</text>
+  <circle class="dot-signal" cx="770" cy="178" r="8"/>
+  <text class="label" x="505" y="225">V+ (5 V)</text>
+  <circle class="dot-power" cx="770" cy="218" r="8"/>
+  <text class="label" x="505" y="265">GND</text>
+  <circle class="dot-ground" cx="770" cy="258" r="8"/>
+
+  <rect class="panel" x="470" y="330" rx="18" width="330" height="190"/>
+  <text class="title" x="635" y="375" text-anchor="middle">Tilt Servo</text>
+  <text class="label" x="505" y="425">Sinyal</text>
+  <circle class="dot-signal" cx="770" cy="418" r="8"/>
+  <text class="label" x="505" y="465">V+ (5 V)</text>
+  <circle class="dot-power" cx="770" cy="458" r="8"/>
+  <text class="label" x="505" y="505">GND</text>
+  <circle class="dot-ground" cx="770" cy="498" r="8"/>
+
+  <rect class="panel" x="900" y="90" rx="18" width="320" height="190"/>
+  <text class="title" x="1060" y="135" text-anchor="middle">Lazer (Opsiyonel)</text>
+  <text class="label" x="935" y="185">Sinyal</text>
+  <circle class="dot-signal" cx="1190" cy="178" r="8"/>
+  <text class="label" x="935" y="225">V+</text>
+  <circle class="dot-power" cx="1190" cy="218" r="8"/>
+  <text class="label" x="935" y="265">GND</text>
+  <circle class="dot-ground" cx="1190" cy="258" r="8"/>
+
+  <rect class="panel" x="900" y="365" rx="18" width="320" height="200"/>
+  <text class="title" x="1060" y="410" text-anchor="middle">Harici 5 V Guc</text>
+  <text class="label" x="935" y="470">+5 V</text>
+  <circle class="dot-power" cx="1190" cy="463" r="8"/>
+  <text class="label" x="935" y="525">GND</text>
+  <circle class="dot-ground" cx="1190" cy="518" r="8"/>
+  <text class="small" x="1060" y="550" text-anchor="middle">Servolar icin yeterli akim</text>
+
+  <rect class="panel" x="360" y="640" rx="18" width="560" height="80"/>
+  <text class="title" x="640" y="682" text-anchor="middle">Bilgisayar + USB Kamera</text>
+  <text class="small" x="640" y="706" text-anchor="middle">Python sunucusu, OpenCV ve web paneli</text>
+
+  <path class="signal" d="M295 238 C390 238, 390 178, 770 178"/>
+  <text class="pin" x="405" y="205">D9 - Pan sinyal</text>
+  <path class="signal" d="M295 318 C390 318, 390 418, 770 418"/>
+  <text class="pin" x="390" y="365">D10 - Tilt sinyal</text>
+  <path class="signal" d="M295 398 C630 398, 700 178, 1190 178"/>
+  <text class="pin" x="790" y="300">D11 - Lazer sinyal</text>
+
+  <path class="power" d="M1190 463 C880 463, 880 218, 770 218"/>
+  <path class="power" d="M1190 463 C860 463, 850 458, 770 458"/>
+  <path class="power" d="M1190 463 L1190 218"/>
+
+  <path class="ground" d="M1190 518 C865 518, 850 258, 770 258"/>
+  <path class="ground" d="M1190 518 C870 518, 850 498, 770 498"/>
+  <path class="ground" d="M1190 518 L1190 258"/>
+  <path class="ground" d="M1190 518 C640 615, 410 560, 295 478"/>
+
+  <path class="usb" d="M205 605 C250 680, 300 680, 360 680" marker-end="url(#arrow-blue)"/>
+
+  <rect x="55" y="630" width="255" height="90" rx="12" fill="#20171b" stroke="#ef5b67" stroke-width="2"/>
+  <text class="label" x="182" y="663" text-anchor="middle">ONEMLI</text>
+  <text class="small" x="182" y="690" text-anchor="middle">Servolari UNO 5 V pininden</text>
+  <text class="small" x="182" y="711" text-anchor="middle">beslemeyin. GND ortak olmali.</text>
+</svg>
